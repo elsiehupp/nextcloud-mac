@@ -350,6 +350,7 @@
 		F7CB689A2541676B0050EC94 /* NCMore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7CB68992541676B0050EC94 /* NCMore.storyboard */; };
 		F7CB68A0254169530050EC94 /* NCSettings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7CB689F254169530050EC94 /* NCSettings.storyboard */; };
 		F7CBC31C24F78E79004D3812 /* NCSortMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CBC31B24F78E79004D3812 /* NCSortMenu.swift */; };
+		F7CFBCA327D63E61008A6AA6 /* NCViewerMediaDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7CFBCA227D63E61008A6AA6 /* NCViewerMediaDetailView.xib */; };
 		F7D0F33E264144FC0097D4A3 /* Background.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7D0F33D264144FC0097D4A3 /* Background.xcassets */; };
 		F7D1612023CF19E30039EBBF /* NCViewerRichWorkspace.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7D1611F23CF19E30039EBBF /* NCViewerRichWorkspace.storyboard */; };
 		F7D57C8626317BDA00DE301D /* NCAccountRequest.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7CA212C25F1333200826ABB /* NCAccountRequest.storyboard */; };
@@ -862,6 +863,7 @@
 		F7CC04E61F5AD50D00378CEF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F7CE8AFA1DC1F8D8009CAE48 /* Nextcloud.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nextcloud.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7CE8AFB1DC1F8D8009CAE48 /* Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Share.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7CFBCA227D63E61008A6AA6 /* NCViewerMediaDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NCViewerMediaDetailView.xib; sourceTree = "<group>"; };
 		F7D0F33D264144FC0097D4A3 /* Background.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Background.xcassets; sourceTree = "<group>"; };
 		F7D154271E2392A300202FD9 /* Nextcloud-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Nextcloud-Bridging-Header.h"; sourceTree = "<group>"; };
 		F7D1611F23CF19E30039EBBF /* NCViewerRichWorkspace.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NCViewerRichWorkspace.storyboard; sourceTree = "<group>"; };
@@ -1342,6 +1344,7 @@
 				F79EDA9E26B004980007D134 /* NCPlayer */,
 				F70753F62542A9C000972D44 /* NCViewerMediaPage.storyboard */,
 				F70753EA2542A99800972D44 /* NCViewerMediaPage.swift */,
+				F7CFBCA227D63E61008A6AA6 /* NCViewerMediaDetailView.xib */,
 				F718C24D254D507B00C5C256 /* NCViewerMediaDetailView.swift */,
 				F70753F02542A9A200972D44 /* NCViewerMedia.swift */,
 			);
@@ -2178,6 +2181,7 @@
 				F76D3CF52428D0C1005DFA87 /* NCViewerPDF.storyboard in Resources */,
 				F700222C1EC479840080073F /* Custom.xcassets in Resources */,
 				F702F2F125EE5CDB008F8E80 /* NCLogin.storyboard in Resources */,
+				F7CFBCA327D63E61008A6AA6 /* NCViewerMediaDetailView.xib in Resources */,
 				F723985C253C95CE00257F49 /* NCViewerRichdocument.storyboard in Resources */,
 				F758B45A212C564000515F55 /* NCScan.storyboard in Resources */,
 				F70D87CF25EE6E58008CBBBD /* NCRenameFile.storyboard in Resources */,
