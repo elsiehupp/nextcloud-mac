@@ -225,7 +225,7 @@ import XLForm
 
     // MARK: - Action
 
-    func dismissSelect(serverUrl: String?, metadata: tableMetadata?, type: String, items: [Any], overwrite: Bool, copy: Bool, move: Bool) {
+    func dismissSelect(serverUrl: String?, metadata: tableMetadata?, type: String, items: [tableMetadata], overwrite: Bool, copy: Bool, move: Bool) {
 
         guard let serverUrl = serverUrl else {
             return
