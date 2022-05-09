@@ -1644,6 +1644,9 @@ extension NCCollectionViewCommon: UICollectionViewDataSource {
             // Transfer
             if metadata.status == NCGlobal.shared.metadataStatusInDownload || metadata.status == NCGlobal.shared.metadataStatusDownloading || metadata.status == NCGlobal.shared.metadataStatusInUpload || metadata.status == NCGlobal.shared.metadataStatusUploading {
                 cell.setButtonMore(named: NCGlobal.shared.buttonMoreStop, image: NCBrandColor.cacheImages.buttonStop)
+            } else if metadata.status == NCGlobal.shared.metadataStatusError {
+                cell.setButtonMore(named: NCGlobal.shared.buttonMoreRetry, image: NCBrandColor.cacheImages.buttonRestore)
+                cell.imageLocal.image = NCUtility.shared.loadImage(named: "closeCircle", color: .red)
             } else {
                 cell.setButtonMore(named: NCGlobal.shared.buttonMoreMore, image: NCBrandColor.cacheImages.buttonMore)
             }
