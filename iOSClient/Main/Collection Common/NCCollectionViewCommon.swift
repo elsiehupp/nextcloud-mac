@@ -795,6 +795,10 @@ class NCCollectionViewCommon: UIViewController, UIGestureRecognizerDelegate, UIS
             toggleMenu(metadata: metadata, imageIcon: image)
         } else if namedButtonMore == NCGlobal.shared.buttonMoreStop {
             NCNetworking.shared.cancelTransferMetadata(metadata) { }
+        } else if namedButtonMore == NCGlobal.shared.buttonMoreRetry {
+            NCManageDatabase.shared.setMetadataSession(ocId: metadata.ocId, session: nil, sessionError: nil, sessionTaskIdentifier: 0, status: NCGlobal.shared.metadataStatusUploadError)
+            self.appDelegate.networkingProcessUpload?.startProcess()
+            self.reloadDataSource()
         }
     }
 
@@ -1467,6 +1471,10 @@ extension NCCollectionViewCommon: UICollectionViewDataSource {
 
             if metadata.status == NCGlobal.shared.metadataStatusInDownload || metadata.status == NCGlobal.shared.metadataStatusDownloading || metadata.status == NCGlobal.shared.metadataStatusInUpload || metadata.status == NCGlobal.shared.metadataStatusUploading {
                 cell.setButtonMore(named: NCGlobal.shared.buttonMoreStop, image: NCBrandColor.cacheImages.buttonStop)
+            } else if metadata.status == NCGlobal.shared.metadataStatusError {
+                cell.setButtonMore(named: NCGlobal.shared.buttonMoreRetry, image: NCBrandColor.cacheImages.buttonRestore)
+                cell.labelInfo.text = NSLocalizedString("_error_", comment: "") + " - " + metadata.sessionError
+                cell.imageLocal.image = NCUtility.shared.loadImage(named: "closeCircle", color: .red)
             } else {
                 cell.setButtonMore(named: NCGlobal.shared.buttonMoreMore, image: NCBrandColor.cacheImages.buttonMore)
             }

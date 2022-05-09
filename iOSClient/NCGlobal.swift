@@ -175,6 +175,7 @@ class NCGlobal: NSObject {
     // Button Type in Cell list/grid
     //
     let buttonMoreMore                              = "more"
+    let buttonMoreRetry                             = "retry"
     let buttonMoreStop                              = "stop"
 
     // Text -  OnlyOffice - Collabora - QuickLook
@@ -294,6 +295,7 @@ class NCGlobal: NSObject {
     // 4) done or error
     //
     let metadataStatusNormal: Int                   = 0
+    let metadataStatusError: Int                    = -10
 
     let metadataStatusWaitDownload: Int             = -1
     let metadataStatusInDownload: Int               = -2

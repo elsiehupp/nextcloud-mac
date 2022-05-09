@@ -492,8 +492,8 @@ class NCUtility: NSObject {
         var image: UIImage?
 
         if #available(iOS 13.0, *) {
-            if let symbolConfiguration = symbolConfiguration {
-                image = UIImage(systemName: named, withConfiguration: symbolConfiguration as? UIImage.Configuration)?.imageColor(color)
+            if let symbolConfiguration = symbolConfiguration as? UIImage.Configuration {
+                image = UIImage(systemName: named, withConfiguration: symbolConfiguration)?.imageColor(color)
             } else {
                 image = UIImage(systemName: named)?.imageColor(color)
             }

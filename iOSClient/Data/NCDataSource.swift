@@ -91,6 +91,15 @@ class NCDataSource: NSObject {
             metadatasSourceSorted = metadatasSource
         }
 
+        let duplicates = Dictionary(grouping: metadatasSourceSorted, by: { $0.fileNameView }).filter({ $0.value.count > 1 })
+        for duplicate in duplicates {
+            let keeper = duplicate.value.first(where: { $0.status != NCGlobal.shared.metadataStatusNormal })
+            duplicate.value.forEach({ meta in
+                guard meta.ocId != keeper?.ocId else { return }
+                metadatasSourceSorted.removeAll(where: { $0.ocId == meta.ocId })
+            })
+        }
+
         /*
         Initialize datasource
         */
