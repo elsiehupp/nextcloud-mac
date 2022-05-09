@@ -90,6 +90,20 @@
     [row.cellConfig setObject:NCBrandColor.shared.label forKey:@"textLabel.textColor"];
     [section addFormRow:row];
     
+    // Disable auto retry
+
+    section = [XLFormSectionDescriptor formSection];
+    [form addFormSection:section];
+    section.footerTitle = NSLocalizedString(@"_disable_auto_retry_footer_", nil);
+
+    row = [XLFormRowDescriptor formRowDescriptorWithTag:@"disableautoretry" rowType:XLFormRowDescriptorTypeBooleanSwitch title:NSLocalizedString(@"_disable_auto_retry_", nil)];
+    row.cellConfigAtConfigure[@"backgroundColor"] = NCBrandColor.shared.secondarySystemGroupedBackground;
+    if ([CCUtility getDisableAutoRetry]) row.value = @"1";
+    else row.value = @"0";
+    [row.cellConfig setObject:[UIFont systemFontOfSize:15.0] forKey:@"textLabel.font"];
+    [row.cellConfig setObject:NCBrandColor.shared.label forKey:@"textLabel.textColor"];
+    [section addFormRow:row];
+
     // Automatic download image
     
     section = [XLFormSectionDescriptor formSection];
@@ -366,7 +380,12 @@
         
         [CCUtility setDisableFilesApp:[[rowDescriptor.value valueData] boolValue]];
     }
-    
+
+    if ([rowDescriptor.tag isEqualToString:@"disableautoretry"]) {
+        
+        [CCUtility setDisableAutoRetry:[[rowDescriptor.value valueData] boolValue]];
+    }
+
     if ([rowDescriptor.tag isEqualToString:@"crashservice"]) {
         
         [CCUtility setDisableCrashservice:[[rowDescriptor.value valueData] boolValue]];

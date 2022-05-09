@@ -404,6 +404,17 @@
     [UICKeyChainStore setString:sDisable forKey:@"disablefilesapp" service:NCGlobal.shared.serviceShareKeyChain];
 }
 
++ (BOOL)getDisableAutoRetry
+{
+    return [[UICKeyChainStore stringForKey:@"disableautoretry" service:NCGlobal.shared.serviceShareKeyChain] boolValue];
+}
+
++ (void)setDisableAutoRetry:(BOOL)disable
+{
+    NSString *sDisable = (disable) ? @"true" : @"false";
+    [UICKeyChainStore setString:sDisable forKey:@"disableautoretry" service:NCGlobal.shared.serviceShareKeyChain];
+}
+
 + (void)setPushNotificationPublicKey:(NSString *)account data:(NSData *)data
 {
     NSString *key = [@"PNPublicKey" stringByAppendingString:account];

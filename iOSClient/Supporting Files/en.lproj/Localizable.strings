@@ -341,7 +341,12 @@
 "_select_offline_warning_"      = "Making multiple files and folders available offline may take a while and use a lot of memory while doing so.";
 "_advanced_"                    = "Advanced";
 "_permissions_"                 = "Permissions";
+
+// MARK: Settings
+
 "_disable_files_app_"           = "Disable Files App integration";
+"_disable_auto_retry_"          = "Disable auto retry";
+"_disable_auto_retry_footer_"   = "Disable auto retry for certain up-/downloading errors";
 "_disable_files_app_footer_"    = "Do not permit the access of files via the iOS Files application";
 "_trial_"                       = "Trial";
 "_trial_expired_day_"           = "Days remaining";
