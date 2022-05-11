@@ -1291,22 +1291,22 @@ import Queuer
 
     // MARK: - WebDav Move
 
-    @objc func moveMetadata(_ metadata: tableMetadata, serverUrlTo: String, overwrite: Bool, completion: @escaping (_ errorCode: Int, _ errorDescription: String?) -> Void) {
+    @objc func moveMetadata(_ metadata: tableMetadata, metadataTo: tableMetadata, overwrite: Bool, completion: @escaping (_ errorCode: Int, _ errorDescription: String?) -> Void) {
 
         if let metadataLive = NCManageDatabase.shared.getMetadataLivePhoto(metadata: metadata) {
-            moveMetadataPlain(metadataLive, serverUrlTo: serverUrlTo, overwrite: overwrite) { errorCode, errorDescription in
+            moveMetadataPlain(metadataLive, metadataTo: metadataTo, overwrite: overwrite) { errorCode, errorDescription in
                 if errorCode == 0 {
-                    self.moveMetadataPlain(metadata, serverUrlTo: serverUrlTo, overwrite: overwrite, completion: completion)
+                    self.moveMetadataPlain(metadata, metadataTo: metadataTo, overwrite: overwrite, completion: completion)
                 } else {
                     completion(errorCode, errorDescription)
                 }
             }
         } else {
-            moveMetadataPlain(metadata, serverUrlTo: serverUrlTo, overwrite: overwrite, completion: completion)
+            moveMetadataPlain(metadata, metadataTo: metadataTo, overwrite: overwrite, completion: completion)
         }
     }
 
-    private func moveMetadataPlain(_ metadata: tableMetadata, serverUrlTo: String, overwrite: Bool, completion: @escaping (_ errorCode: Int, _ errorDescription: String?) -> Void) {
+    private func moveMetadataPlain(_ metadata: tableMetadata, metadataTo: tableMetadata, overwrite: Bool, completion: @escaping (_ errorCode: Int, _ errorDescription: String?) -> Void) {
 
         let permission = NCUtility.shared.permissionsContainsString(metadata.permissions, permissions: NCGlobal.shared.permissionCanRename)
         if !(metadata.permissions == "") && !permission {
@@ -1315,7 +1315,7 @@ import Queuer
 
         let serverUrlFrom = metadata.serverUrl
         let serverUrlFileNameSource = metadata.serverUrl + "/" + metadata.fileName
-        let serverUrlFileNameDestination = serverUrlTo + "/" + metadata.fileName
+        let serverUrlFileNameDestination = metadataTo.serverUrl + "/" + metadata.fileName
 
         NCCommunication.shared.moveFileOrFolder(serverUrlFileNameSource: serverUrlFileNameSource, serverUrlFileNameDestination: serverUrlFileNameDestination, overwrite: overwrite) { account, errorCode, errorDescription in
 
@@ -1325,7 +1325,7 @@ import Queuer
                     NCManageDatabase.shared.deleteDirectoryAndSubDirectory(serverUrl: CCUtility.stringAppendServerUrl(metadata.serverUrl, addFileName: metadata.fileName), account: account)
                 }
 
-                NCManageDatabase.shared.moveMetadata(ocId: metadata.ocId, serverUrlTo: serverUrlTo)
+                NCManageDatabase.shared.moveMetadata(ocId: metadata.ocId, serverUrlTo: metadataTo.serverUrl)
 
                 NotificationCenter.default.postOnMainThread(name: NCGlobal.shared.notificationCenterMoveFile, userInfo: ["ocId": metadata.ocId, "serverUrlFrom": serverUrlFrom])
             }

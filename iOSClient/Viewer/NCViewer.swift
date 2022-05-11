@@ -221,16 +221,16 @@ extension NCViewer: NCSelectDelegate {
     func dismissSelect(serverUrl: String?, metadata: tableMetadata?, type: String, items: [tableMetadata], overwrite: Bool, copy: Bool, move: Bool) {
         if let serverUrl = serverUrl {
             let metadata = items[0]
+            let newMetadata = tableMetadata(value: metadata)
+            newMetadata.serverUrl = serverUrl
             if move {
-                NCNetworking.shared.moveMetadata(metadata, serverUrlTo: serverUrl, overwrite: overwrite) { errorCode, errorDescription in
+                NCNetworking.shared.moveMetadata(metadata, metadataTo: newMetadata, overwrite: overwrite) { errorCode, errorDescription in
                     if errorCode != 0 {
 
                         NCContentPresenter.shared.messageNotification("_error_", description: errorDescription, delay: NCGlobal.shared.dismissAfterSecond, type: NCContentPresenter.messageType.error, errorCode: errorCode)
                     }
                 }
             } else if copy {
-                let newMetadata = tableMetadata(value: metadata)
-                newMetadata.serverUrl = serverUrl
                 NCNetworking.shared.copyMetadata(metadata, metadataTo: newMetadata, overwrite: overwrite) { errorCode, errorDescription in
                     if errorCode != 0 {
 

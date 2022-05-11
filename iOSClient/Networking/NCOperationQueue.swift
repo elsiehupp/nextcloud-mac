@@ -255,7 +255,7 @@ class NCOperationCopyMove: ConcurrentOperation {
         let newMetadata = tableMetadata(value: metadata)
         newMetadata.serverUrl = serverUrlTo
         newMetadata.status = NCGlobal.shared.metadataStatusProccessingServer
-        newMetadata.ocId = UUID().uuidString
+        newMetadata.ocId = move ? metadata.ocId : UUID().uuidString
 
         if !overwrite {
             let newName = NCUtilityFileSystem.shared.createFileName(metadata.fileName, serverUrl: serverUrlTo, account: metadata.account)
@@ -282,7 +282,7 @@ class NCOperationCopyMove: ConcurrentOperation {
             self.finish()
         } else {
             if move {
-                NCNetworking.shared.moveMetadata(metadata, serverUrlTo: metadataTo.serverUrl, overwrite: overwrite) { errorCode, errorDescription in
+                NCNetworking.shared.moveMetadata(metadata, metadataTo: metadataTo, overwrite: overwrite) { errorCode, errorDescription in
                     if errorCode != 0 {
                         NCContentPresenter.shared.messageNotification("_error_", description: errorDescription, delay: NCGlobal.shared.dismissAfterSecond, type: NCContentPresenter.messageType.error, errorCode: errorCode)
                     }
