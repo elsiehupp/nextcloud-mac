@@ -1336,22 +1336,22 @@ import Queuer
 
     // MARK: - WebDav Copy
 
-    @objc func copyMetadata(_ metadata: tableMetadata, serverUrlTo: String, overwrite: Bool, completion: @escaping (_ errorCode: Int, _ errorDescription: String?) -> Void) {
+    @objc func copyMetadata(_ metadata: tableMetadata, metadataTo: tableMetadata, overwrite: Bool, completion: @escaping (_ errorCode: Int, _ errorDescription: String?) -> Void) {
 
         if let metadataLive = NCManageDatabase.shared.getMetadataLivePhoto(metadata: metadata) {
-            copyMetadataPlain(metadataLive, serverUrlTo: serverUrlTo, overwrite: overwrite) { errorCode, errorDescription in
+            copyMetadataPlain(metadataLive, metadataTo: metadataTo, overwrite: overwrite) { errorCode, errorDescription in
                 if errorCode == 0 {
-                    self.copyMetadataPlain(metadata, serverUrlTo: serverUrlTo, overwrite: overwrite, completion: completion)
+                    self.copyMetadataPlain(metadata, metadataTo: metadataTo, overwrite: overwrite, completion: completion)
                 } else {
                     completion(errorCode, errorDescription)
                 }
             }
         } else {
-            copyMetadataPlain(metadata, serverUrlTo: serverUrlTo, overwrite: overwrite, completion: completion)
+            copyMetadataPlain(metadata, metadataTo: metadataTo, overwrite: overwrite, completion: completion)
         }
     }
 
-    private func copyMetadataPlain(_ metadata: tableMetadata, serverUrlTo: String, overwrite: Bool, completion: @escaping (_ errorCode: Int, _ errorDescription: String?) -> Void) {
+    private func copyMetadataPlain(_ metadata: tableMetadata, metadataTo: tableMetadata, overwrite: Bool, completion: @escaping (_ errorCode: Int, _ errorDescription: String?) -> Void) {
 
         let permission = NCUtility.shared.permissionsContainsString(metadata.permissions, permissions: NCGlobal.shared.permissionCanRename)
         if !(metadata.permissions == "") && !permission {
@@ -1359,14 +1359,9 @@ import Queuer
         }
 
         let serverUrlFileNameSource = metadata.serverUrl + "/" + metadata.fileName
-        let serverUrlFileNameDestination = serverUrlTo + "/" + metadata.fileName
+        let serverUrlFileNameDestination = metadataTo.serverUrl + "/" + metadataTo.fileName
 
         NCCommunication.shared.copyFileOrFolder(serverUrlFileNameSource: serverUrlFileNameSource, serverUrlFileNameDestination: serverUrlFileNameDestination, overwrite: overwrite) { _, errorCode, errorDescription in
-
-            if errorCode == 0 {
-
-                NotificationCenter.default.postOnMainThread(name: NCGlobal.shared.notificationCenterCopyFile, userInfo: ["ocId": metadata.ocId, "serverUrlTo": serverUrlTo])
-            }
 
             completion(errorCode, errorDescription)
         }

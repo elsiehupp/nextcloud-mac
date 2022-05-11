@@ -336,6 +336,8 @@ extension NCManageDatabase {
                             realm.add(tableMetadata.init(value: metadata), update: .all)
                         }
                     } else {
+                        self.deleteMetadata(predicate: NSPredicate(format: "status == %d && serverUrl == %@ && fileName == %@ && account == %@", NCGlobal.shared.metadataStatusProccessingServer, metadata.serverUrl, metadata.fileName, metadata.account))
+
                         // new
                         ocIdsUdate.append(metadata.ocId)
                         realm.add(tableMetadata.init(value: metadata), update: .all)

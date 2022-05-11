@@ -522,17 +522,17 @@ import SVGKit
     // MARK: - NCSelect + Delegate
 
     func dismissSelect(serverUrl: String?, metadata: tableMetadata?, type: String, items: [tableMetadata], overwrite: Bool, copy: Bool, move: Bool) {
-        if serverUrl != nil && items.count > 0 {
-            if copy {
-                for metadata in items as! [tableMetadata] {
-                    NCOperationQueue.shared.copyMove(metadata: metadata, serverUrl: serverUrl!, overwrite: overwrite, move: false)
-                }
-            } else if move {
-                for metadata in items as! [tableMetadata] {
-                    NCOperationQueue.shared.copyMove(metadata: metadata, serverUrl: serverUrl!, overwrite: overwrite, move: true)
-                }
+        guard let serverUrl = serverUrl, !items.isEmpty else { return }
+        if copy {
+            for metadata in items {
+                NCOperationQueue.shared.copyMove(metadata: metadata, serverUrl: serverUrl, overwrite: overwrite, move: false)
             }
-        }
+        } else if move {
+            for metadata in items {
+                NCOperationQueue.shared.copyMove(metadata: metadata, serverUrl: serverUrl, overwrite: overwrite, move: true)
+            }
+        } else { return }
+        NotificationCenter.default.postOnMainThread(name: NCGlobal.shared.notificationCenterReloadDataSource, userInfo: ["serverUrl": serverUrl])
     }
 
     func openSelectView(items: [tableMetadata]) {

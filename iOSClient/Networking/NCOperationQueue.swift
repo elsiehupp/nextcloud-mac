@@ -94,11 +94,7 @@ import NCCommunication
     // Copy Move file
 
     @objc func copyMove(metadata: tableMetadata, serverUrl: String, overwrite: Bool, move: Bool) {
-        for operation in copyMoveQueue.operations as! [NCOperationCopyMove] {
-            if operation.metadata.ocId == metadata.ocId {
-                return
-            }
-        }
+        guard !copyMoveQueue.operations.contains(where: { ($0 as? NCOperationCopyMove)?.metadata.ocId == metadata.ocId }) else { return }
         copyMoveQueue.addOperation(NCOperationCopyMove(metadata: metadata, serverUrlTo: serverUrl, overwrite: overwrite, move: move))
     }
     @objc func copyMoveCancelAll() {
@@ -250,16 +246,35 @@ class NCOperationDelete: ConcurrentOperation {
 
 class NCOperationCopyMove: ConcurrentOperation {
 
-    var metadata: tableMetadata
-    var serverUrlTo: String
-    var overwrite: Bool
-    var move: Bool
+    let metadata: tableMetadata
+    let metadataTo: tableMetadata
+    let overwrite: Bool
+    let move: Bool
 
     init(metadata: tableMetadata, serverUrlTo: String, overwrite: Bool, move: Bool) {
-        self.metadata = tableMetadata.init(value: metadata)
-        self.serverUrlTo = serverUrlTo
+        let newMetadata = tableMetadata(value: metadata)
+        newMetadata.serverUrl = serverUrlTo
+        newMetadata.status = NCGlobal.shared.metadataStatusProccessingServer
+        newMetadata.ocId = UUID().uuidString
+
+        if !overwrite {
+            let newName = NCUtilityFileSystem.shared.createFileName(metadata.fileName, serverUrl: serverUrlTo, account: metadata.account)
+            newMetadata.fileName = newName
+            newMetadata.fileNameView = newName
+        }
+        NCManageDatabase.shared.addMetadata(newMetadata)
+        self.metadata = tableMetadata(value: metadata)
+        self.metadataTo = tableMetadata(value: newMetadata)
         self.overwrite = overwrite
         self.move = move
+    }
+    
+    override func finish(success: Bool = true) {
+        super.finish(success: success)
+
+        if NCOperationQueue.shared.copyMoveCount() == 0 {
+            NotificationCenter.default.postOnMainThread(name: NCGlobal.shared.notificationCenterReloadDataSourceNetworkForced, userInfo: ["serverUrl": metadataTo.serverUrl])
+        }
     }
 
     override func start() {
@@ -267,14 +282,14 @@ class NCOperationCopyMove: ConcurrentOperation {
             self.finish()
         } else {
             if move {
-                NCNetworking.shared.moveMetadata(metadata, serverUrlTo: serverUrlTo, overwrite: overwrite) { errorCode, errorDescription in
+                NCNetworking.shared.moveMetadata(metadata, serverUrlTo: metadataTo.serverUrl, overwrite: overwrite) { errorCode, errorDescription in
                     if errorCode != 0 {
                         NCContentPresenter.shared.messageNotification("_error_", description: errorDescription, delay: NCGlobal.shared.dismissAfterSecond, type: NCContentPresenter.messageType.error, errorCode: errorCode)
                     }
                     self.finish()
                 }
             } else {
-                NCNetworking.shared.copyMetadata(metadata, serverUrlTo: serverUrlTo, overwrite: overwrite) { errorCode, errorDescription in
+                NCNetworking.shared.copyMetadata(metadata, metadataTo: metadataTo, overwrite: overwrite) { errorCode, errorDescription in
                     if errorCode != 0 {
                         NCContentPresenter.shared.messageNotification("_error_", description: errorDescription, delay: NCGlobal.shared.dismissAfterSecond, type: NCContentPresenter.messageType.error, errorCode: errorCode)
                     }
